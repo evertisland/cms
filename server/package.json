@@ -1,0 +1,14 @@
+{
+  "name": "cms-server",
+  "version": "0.0.1",
+  "description": "Server for CMS",
+  "author": "Evert Island <evertisland@hotmail.com>",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "4.13.4",
+    "mongodb": "2.2.5"
+  }
+}
