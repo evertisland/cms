@@ -5,11 +5,20 @@
   "author": "Evert Island <evertisland@hotmail.com>",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "build:html": "cp ./client/input/index.pug ./client/output/",
+    "build:css": "lessc ./client/input/main.less ./client/output/main.css",
+    "build:js": "babel ./client/input/ -w -d ./client/output/",
+    "start": "nodemon .",
+    "watch": "watch ./client/input build:html build:css build:css"
   },
   "dependencies": {
     "express": "4.13.4",
-    "mongoose": "4.5.8",
-    "pug": "2.0.0"
+    "pug": "2.0.0-beta4"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.13.2",
+    "less": "^2.7.1",
+    "nodemon": "^1.10.0",
+    "watch": "^0.19.1"
   }
 }

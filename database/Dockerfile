@@ -12,5 +12,6 @@ RUN apk add mongodb
 RUN mkdir -p /data/db
 
 EXPOSE 27017
+EXPOSE 28017
 
 ENTRYPOINT ["mongod"]
