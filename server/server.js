@@ -21,8 +21,8 @@ app.get('/', function (req, res) {
       var articles = db.collection('articles');
       articles.find({}, function (err, data) {
         data.toArray(function (err, content) {
-          title = 'Titles';
-          body = 'Text';
+          title = 'Articles';
+          body = 'Use the following form to add new blogpost';
           date = new Date(Date.now());
           res.render('index', {title: title, body: body, date: date});
         });
@@ -31,6 +31,7 @@ app.get('/', function (req, res) {
   });
 });
 app.get('/articles', function (req,res) {
+    console.log(req.body);
     res.render('articles', {});
 });
 app.get('/article/:id', function (req,res) {

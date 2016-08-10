@@ -1,7 +1,70 @@
+html,
 body {
-  background: gray;
+  margin: 0;
+  height: 100%;
+}
+body {
+  background: black;
+}
+@font-face {
+  font-family: 'Avenir';
+  src: url('assets/AvenirLTStd-Medium.woff');
+}
+p,
+a,
+li,
+input,
+textarea,
+button,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Avenir';
+}
+.container {
+  box-sizing: border-box;
+  min-height: 100%;
+  background: orange;
+  border: 10px solid black;
+  padding: 10px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+}
+h1 {
+  margin: 0;
+  font-size: 60px;
+  text-align: center;
+  border-bottom: 3px solid white;
 }
 form {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  margin-bottom: 0;
+}
+form input {
+  margin: 10px 0;
+  font-size: 21px;
+  padding: 5px;
+}
+form button {
+  height: 60px;
+  font-size: 24px;
+  background-color: black;
+  color: white;
+  border: 0;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+form button:hover {
+  background-color: red;
+}
+form textarea {
+  flex: 1;
+  font-size: 21px;
+  padding: 5px;
 }
