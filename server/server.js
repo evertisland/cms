@@ -53,7 +53,7 @@
                     var articles = db.collection('articles');
                     articles.find({}, function(err, data) {
                         data.toArray(function(err, body) {
-                            body = body[3];
+                            body = body[body.length - 1];
                             title = body.title;
                             content = body.content;
                             author = body.author;
