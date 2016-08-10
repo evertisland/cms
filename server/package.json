@@ -17,6 +17,7 @@
     "build": "npm run watch | npm run reload"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "4.13.4",
     "pug": "2.0.0-beta4"
   },

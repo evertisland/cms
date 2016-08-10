@@ -1,46 +1,120 @@
-'use strict';
+(function() {
+    'use strict';
 
-const express = require('express');
-//const database = require('./database');
-const MongoClient = require('mongodb').MongoClient;
-const apiRoute = require('./routes/api');
-const PORT = 8080;
-const URL = 'mongodb://localhost:27017';
-const app = express();
-app.use(express.static('client/output'));
-app.set('views', 'client/output/');
-app.set('view engine', 'pug');
-app.get('/', function (req, res) {
-  var title, body, date;
-  MongoClient.connect(URL, function (err, db) {
-    if (err) {
-      console.log('Unable to connect to Mongo');
-      process.exit(1);
-    } else {
-      console.log('Connection to Mongo successful');
-      var articles = db.collection('articles');
-      articles.find({}, function (err, data) {
-        data.toArray(function (err, content) {
-          title = 'Articles';
-          body = 'Use the following form to add new blogpost';
-          date = new Date(Date.now());
-          res.render('index', {title: title, body: body, date: date});
-        });
-      });
+    const express = require('express');
+    const bodyParser = require('body-parser');
+    const mongo = require('mongodb');
+    const MongoClient = mongo.MongoClient;
+    const MongoDB = mongo.Db;
+    const Server = mongo.Server;
+    const apiRoute = require('./routes/api');
+    const PORT = 8080;
+    const URL = 'mongodb://localhost:27017';
+    const app = express();
+    var database;
+
+    (function initialize() {
+        configureExpress();
+        defineRoutes();
+        assignPort();
+    }());
+
+    function configureExpress() {
+        app.use(bodyParser.json());
+        app.use(bodyParser.urlencoded({ extended: false }));
+        app.use(express.static('client/output'));
+        app.set('views', 'client/output/');
+        app.set('view engine', 'pug');
     }
-  });
-});
-app.get('/articles', function (req,res) {
-    console.log(req.body);
-    res.render('articles', {});
-});
-app.get('/article/:id', function (req,res) {
-    var article = req.params.id;
-    res.render('article', {});
-});
-app.get('/api', function (req,res) {
-    res.send('Welcome to API');
-});
 
-app.listen(PORT);
-console.log('Listening on PORT: ', PORT);
+    function createDatabase() {
+        database = new MongoDB('articles', new Server('localhost', 27017));
+        database.open(function (err,db) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('successful');
+            }
+        })
+    }
+
+    function defineRoutes() {
+        // INDEX
+        app.get('/', function(req, res) {
+            var title, content, author, date;
+            MongoClient.connect(URL, function(err, db) {
+                if (err) {
+                    console.log('Unable to connect to Mongo');
+                    process.exit(1);
+                    createDatabase();
+                    defineRoutes();
+                } else {
+                    console.log('Connection to Mongo successful');
+                    var articles = db.collection('articles');
+                    articles.find({}, function(err, data) {
+                        data.toArray(function(err, body) {
+                            body = body[3];
+                            title = body.title;
+                            content = body.content;
+                            author = body.author;
+                            date = body.date;
+                            res.render('index', {
+                                title: title,
+                                content: content,
+                                author: author,
+                                date: date
+                            });
+                        });
+                    });
+                }
+            });
+        });
+        // ARTICLES
+        app.get('/articles', function(req, res) {
+            console.log(req.body);
+            res.render('articles', {});
+        });
+        // ARTICLE
+        app.get('/article/:id', function(req, res) {
+            var article = req.params.id;
+            res.render('article', {});
+        });
+        // ADD ARTILCE
+        app.post('/add-article', function(req, res) {
+            var title = req.body.title;
+            var content = req.body.content;
+            var author = req.body.author;
+            MongoClient.connect(URL, function(err, db) {
+                if (err) {
+                    console.log('Unable to connect to Mongo');
+                    process.exit(1);
+                } else {
+                    console.log('Connection to Mongo successful');
+                    var articles = db.collection('articles');
+                    articles.insert({
+                        "title": title,
+                        "content": content,
+                        "author": author,
+                        "date": new Date(Date.now())
+                    }, callback(err));
+                    function callback() {
+                        if (err) {
+                            res.send('Problem with inserting to database')
+                        } else {
+                            res.send('Insert was successfule')
+                        }
+                    }
+                }
+            });
+        });
+        // API
+        app.get('/api', function(req, res) {
+            res.send('Welcome to API');
+        });
+    }
+
+    function assignPort() {
+        app.listen(PORT);
+        console.log('Listening on PORT: ', PORT);
+    }
+}());
