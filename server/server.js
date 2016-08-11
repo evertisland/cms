@@ -53,6 +53,7 @@
                     var articles = db.collection('articles');
                     articles.find({}, function(err, data) {
                         data.toArray(function(err, body) {
+                          if (body.length) {
                             body = body[body.length - 1];
                             title = body.title;
                             content = body.content;
@@ -64,6 +65,14 @@
                                 author: author,
                                 date: date
                             });
+                          } else {
+                            res.render('index', {
+                                title: 'Add New Articles',
+                                content: 'content',
+                                author: 'author',
+                                date: new Date(Date.now())
+                            });
+                          }
                         });
                     });
                 }
