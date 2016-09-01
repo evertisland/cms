@@ -3,13 +3,13 @@ html, body {
     height: 100%;
 }
 body {
-    background: black;
+    background: red;
     color: white;
 }
-@font-face {
-    font-family: 'Avenir';
-    src: url('./assets/AvenirLTStd-Medium.woff');
-}
+// @font-face {
+//     font-family: 'Avenir';
+//     src: url('./assets/AvenirLTStd-Medium.woff');
+// }
 p,a,li,input,textarea,button,h1,h2,h3,h4,h5,h6 {
     font-family: 'Avenir';
     color: white;

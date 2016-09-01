@@ -16,6 +16,7 @@
         configureExpress();
         defineRoutes();
         assignPort();
+        initWebpack();
     }());
 
     function configureExpress() {
@@ -118,6 +119,19 @@
         app.get('/api', function(req, res) {
             res.send('Welcome to API');
         });
+    }
+
+    function initWebpack() {
+        if (app.get('env') === 'development') {
+            var middleware = require('webpack-dev-middleware');
+            var webpack = require('webpack');
+            var config = require('./webpack.config');
+            app.use(middleware(webpack(config), {
+                publicPath: '/client/output/client',
+                headers: {'X-Custom-Webpack-Header': 'yes'},
+                stats: { colors: true}
+            }));
+        }
     }
 
     function assignPort() {
