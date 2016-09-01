@@ -4,6 +4,7 @@ html, body {
 }
 body {
     background: black;
+    color: white;
 }
 @font-face {
     font-family: 'Avenir';
@@ -11,11 +12,12 @@ body {
 }
 p,a,li,input,textarea,button,h1,h2,h3,h4,h5,h6 {
     font-family: 'Avenir';
+    color: white;
 }
 .container {
     box-sizing: border-box;
     min-height: 100%;
-    background: yellow;
+    background: orange;
     border: 10px solid black;
     padding: 10px;
     border-radius: 20px;

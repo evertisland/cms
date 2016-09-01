@@ -7,8 +7,7 @@
     const MongoClient = mongo.MongoClient;
     const MongoDB = mongo.Db;
     const Server = mongo.Server;
-    const apiRoute = require('./routes/api');
-    const PORT = 8080;
+    const PORT = 8081;
     const URL = 'mongodb://localhost:27017';
     const app = express();
     var database;
@@ -53,26 +52,25 @@
                     var articles = db.collection('articles');
                     articles.find({}, function(err, data) {
                         data.toArray(function(err, body) {
-                          if (body.length) {
-                            body = body[body.length - 1];
-                            title = body.title;
-                            content = body.content;
-                            author = body.author;
-                            date = body.date;
+                            if (body.length) {
+                                body = body[body.length - 1];
+                                title = body.title;
+                                content = body.content;
+                                author = body.author;
+                                date = body.date;
+                            } else {
+                                title = 'New Blog';
+                                content = 'Please insert content!';
+                                author = 'Place Holder';
+                                date = new Date(Date.now());
+                            }
+
                             res.render('index', {
                                 title: title,
                                 content: content,
                                 author: author,
                                 date: date
                             });
-                          } else {
-                            res.render('index', {
-                                title: 'Add New Articles',
-                                content: 'content',
-                                author: 'author',
-                                date: new Date(Date.now())
-                            });
-                          }
                         });
                     });
                 }

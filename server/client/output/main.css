@@ -23,11 +23,12 @@ h4,
 h5,
 h6 {
   font-family: 'Avenir';
+  color: white;
 }
 .container {
   box-sizing: border-box;
   min-height: 100%;
-  background: yellow;
+  background: orangered;
   border: 10px solid black;
   padding: 10px;
   border-radius: 20px;
